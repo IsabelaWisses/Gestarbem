@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GestarBem • Listas</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500&family=Barlow+Condensed:wght@700&display=swap"
+    rel="stylesheet">
+  
+  <style>
+    :root{
+      --primary:#ffe9ef;
+      --primary-2:#ffd4e0;
+      --neutral:#faf7f3;
+      --white:#ffffff;
+      --text:#111111;
+      --muted:rgba(17,17,17,.65);
+      --border:rgba(17,17,17,.12);
+      --radius:10px;
+      --shadow: 0 14px 45px rgba(0,0,0,.08);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    html, body{
+      min-height:100%;
+    }
+
+    body{
+      font-family:'Barlow',sans-serif;
+      background:var(--neutral);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    a{text-decoration:none;color:inherit;}
+    button{font-family:inherit;}
+
+    .top-line{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:2px;
+      background:rgba(255,255,255,.9);
+      z-index:9999;
+    }
+
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:9998;
+      padding:18px 40px;
+      background:transparent;
+    }
+
+    .header-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:12px 16px;
+      border-radius:var(--radius);
+      background:rgba(255,233,239,.18);
+      border:1px solid rgba(255,255,255,.55);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+
+    .brand-mini{
+      font-family:"Barlow Condensed",sans-serif;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      color:var(--text);
+      opacity:.9;
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .nav-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .menu-btn,
+    .close-btn,
+    .icon-btn{
+      width:44px;
+      height:44px;
+      border-radius:2px;
+      background:rgba(255,233,239,.85);
+      border:1px solid rgba(17,17,17,.12);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:.2s ease;
+      user-select:none;
+      font-size:18px;
+      line-height:1;
+      flex-shrink:0;
+    }
+
+    .menu-btn:hover,
+    .close-btn:hover,
+    .icon-btn:hover,
+    .btn-square:hover,
+    .btn-soft:hover,
+    .btn-lite:hover{
+      filter:brightness(.98);
+      transform:translateY(-1px);
+    }
+
+    .btn-square{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:2px;
+      background:var(--primary);
+      color:#000;
+      border:1px solid var(--border);
+      font-weight:500;
+      min-width:110px;
+      transition:.2s ease;
+      cursor:pointer;
+      user-select:none;
+      text-decoration:none;
+      white-space:nowrap;
+    }
+
+    .container{
+      max-width:900px;
+      margin:0 auto;
+      padding:24px;
+      padding-top:130px;
+      padding-bottom:32px;
+    }
+
+    .title{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:28px;
+      margin-bottom:6px;
+      letter-spacing:.4px;
+      text-transform:uppercase;
+      opacity:.95;
+    }
+
+    .subtitle{
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:20px;
+      line-height:1.55;
+    }
+
+    .search{
+      background:#fff;
+      border-radius:10px;
+      padding:12px;
+      margin-bottom:18px;
+      font-size:14px;
+      width:100%;
+      border:1px solid rgba(17,17,17,.10);
+      outline:none;
+    }
+
+    .chips{
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      margin-bottom:18px;
+      padding-bottom:2px;
+    }
+
+    .chip{
+      background:var(--primary);
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:13px;
+      white-space:nowrap;
+      border:1px solid rgba(17,17,17,.10);
+      color:rgba(17,17,17,.78);
+      user-select:none;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .chip:hover{
+      transform:translateY(-1px);
+      filter:brightness(.99);
+    }
+
+    .chip.is-active{
+      border:1px solid rgba(17,17,17,.22);
+      filter:brightness(.98);
+      transform:translateY(-1px);
+    }
+
+    .examples-label{
+      font-size:12.5px;
+      color:var(--muted);
+      margin:12px 0 10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      opacity:.92;
+    }
+
+    .examples-label span{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      background:rgba(255,233,239,.75);
+      border:1px solid rgba(17,17,17,.10);
+      font-size:12px;
+    }
+
+    .create-center{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin:8px 0 22px;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:16px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.86);
+      border-radius:14px;
+      padding:16px;
+      cursor:pointer;
+      border:1px solid rgba(17,17,17,.10);
+      transition:.2s ease;
+      position:relative;
+      overflow:hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .card:hover{
+      transform:translateY(-2px);
+      filter:brightness(.99);
+    }
+
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-30px -30px auto auto;
+      width:180px;
+      height:180px;
+      background:radial-gradient(circle at center, rgba(255,233,239,.70), rgba(255,255,255,0) 60%);
+      transform:translate(25%,-25%);
+      pointer-events:none;
+    }
+
+    .card strong{font-weight:600;}
+    .card small{
+      opacity:.65;
+      font-size:12px;
+      display:inline-block;
+      margin-top:6px;
+    }
+
+    .detail{
+      display:none;
+      margin-top:18px;
+      background:rgba(255,255,255,0.88);
+      border-radius:14px;
+      padding:16px;
+      border:1px solid rgba(17,17,17,.10);
+      box-shadow: var(--shadow);
+    }
+
+    .detail-title{
+      font-family:"Barlow Condensed",sans-serif;
+      font-size:20px;
+      margin-bottom:10px;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+      opacity:.9;
+    }
+
+    .detail input{
+      width:100%;
+      padding:12px;
+      margin-bottom:12px;
+      border:1px solid rgba(17,17,17,.10);
+      border-radius:10px;
+      background:rgba(250,247,243,0.8);
+      font-size:14px;
+      outline:none;
+      font-family:"Barlow",sans-serif;
+    }
+
+    .items{
+      display:grid;
+      gap:10px;
+      margin-top:6px;
+      margin-bottom:10px;
+    }
+
+    .item-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:rgba(255,233,239,.22);
+      border:1px solid rgba(17,17,17,.08);
+      font-size:14px;
+    }
+
+    .item-row input[type="checkbox"]{
+      width:16px;
+      height:16px;
+      accent-color:#111;
+    }
+
+    .item-text.done{
+      text-decoration:line-through;
+      opacity:.55;
+    }
+
+    .detail-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:6px;
+      justify-content:space-between;
+    }
+
+    .actions-left,
+    .actions-right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn-soft{
+      padding:12px 16px;
+      border-radius:2px;
+      background:var(--primary);
+      border:1px solid var(--border);
+      color:#000;
+      cursor:pointer;
+      font-weight:500;
+      font-family:"Barlow",sans-serif;
+      font-size:13px;
+      transition:.2s ease;
+    }
+
+    .btn-danger{
+      background:rgba(255,255,255,0.9);
+    }
+
+    .empty{
+      opacity:.75;
+      font-size:14px;
+      margin-top:6px;
+      background:rgba(255,255,255,0.70);
+      border:1px dashed rgba(17,17,17,.14);
+      border-radius:14px;
+      padding:14px;
+      line-height:1.6;
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(17,17,17,0.18);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:10050;
+      padding:18px;
+      backdrop-filter:blur(2px);
+      -webkit-backdrop-filter:blur(2px);
+    }
+
+    .overlay.show{
+      display:flex;
+    }
+
+    .modal{
+      width:min(520px,100%);
+      max-height:88vh;
+      overflow-y:auto;
+      background:rgba(255,255,255,0.92);
+      border:1px solid rgba(17,17,17,0.10);
+      border-radius:14px;
+      padding:16px;
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      opacity:0;
+      transform:translateY(14px);
+      transition:opacity .22s ease, transform .22s ease;
+    }
+
+    .overlay.show .modal{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .modal h2{
+      font-family:"Barlow Condensed",sans-serif;
+      font-size:22px;
+      margin-bottom:6px;
+      letter-spacing:.4px;
+      opacity:.95;
+      text-transform:uppercase;
+    }
+
+    .modal p{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:12px;
+      line-height:1.55;
+    }
+
+    .field label{
+      font-size:11px;
+      letter-spacing:1px;
+      font-weight:500;
+      display:block;
+      margin-bottom:6px;
+      opacity:.85;
+      text-transform:uppercase;
+    }
+
+    .modal input[type="text"]{
+      width:100%;
+      padding:12px;
+      border:1px solid rgba(17,17,17,.10);
+      border-radius:10px;
+      background:rgba(250,247,243,0.8);
+      font-size:14px;
+      outline:none;
+      font-family:"Barlow",sans-serif;
+      margin-bottom:10px;
+    }
+
+    .modal-items{
+      display:grid;
+      gap:10px;
+      margin:8px 0 10px;
+    }
+
+    .inline-add{
+      display:none;
+      gap:10px;
+      align-items:center;
+      margin-top:6px;
+    }
+
+    .inline-add.show{
+      display:flex;
+    }
+
+    .inline-add input{
+      flex:1;
+      margin:0 !important;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .btn-lite{
+      padding:12px 16px;
+      border-radius:2px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.9);
+      cursor:pointer;
+      font-weight:500;
+      transition:.2s ease;
+      font-family:"Barlow",sans-serif;
+      font-size:13px;
+    }
+
+    .hint-empty{
+      font-size:14px;
+      opacity:.75;
+      margin-top:6px;
+      line-height:1.5;
+    }
+
+    .edit-title-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    .edit-title-row input{
+      margin-bottom:0;
+    }
+
+    .sidebar-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.25);
+      opacity:0;
+      pointer-events:none;
+      transition:.2s ease;
+      z-index:10020;
+    }
+
+    .sidebar-overlay.open{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .sidebar{
+      position:fixed;
+      top:0;
+      left:0;
+      height:100%;
+      width:min(320px,86vw);
+      background:rgba(255,255,255,.88);
+      border-right:1px solid rgba(17,17,17,.10);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      transform:translateX(-105%);
+      transition:.25s ease;
+      z-index:10030;
+      padding:18px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .sidebar.open{
+      transform:translateX(0);
+    }
+
+    .sidebar-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px;
+      border-radius:var(--radius);
+      background:rgba(255,233,239,.30);
+      border:1px solid rgba(255,255,255,.6);
+    }
+
+    .sidebar-title{
+      font-family:"Barlow Condensed",sans-serif;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      font-size:18px;
+      opacity:.9;
+    }
+
+    .sidebar-nav{
+      display:grid;
+      gap:10px;
+      margin-top:6px;
+    }
+
+    .side-link{
+      padding:12px;
+      border-radius:10px;
+      background:rgba(255,255,255,.70);
+      border:1px solid rgba(17,17,17,.10);
+      transition:.2s ease;
+      font-weight:500;
+      color:rgba(17,17,17,.80);
+    }
+
+    .side-link:hover{
+      transform:translateY(-1px);
+      background:rgba(255,233,239,.35);
+    }
+
+    .side-link.active{
+      background:rgba(255,233,239,.85);
+      border-color:rgba(17,17,17,.10);
+    }
+
+    .sidebar-footer{
+      margin-top:auto;
+      font-size:12px;
+      color:rgba(17,17,17,.60);
+      padding:10px 4px;
+      line-height:1.5;
+    }
+
+    @media (max-width: 920px){
+      header{
+        padding:18px 18px;
+      }
+
+      .container{
+        padding:20px;
+        padding-top:122px;
+      }
+    }
+
+    @media (max-width: 768px){
+      .header-inner{
+        padding:10px 12px;
+      }
+
+      .nav-actions{
+        width:100%;
+        justify-content:flex-start;
+        gap:8px;
+      }
+
+      .btn-square{
+        padding:10px 14px;
+        min-width:auto;
+        font-size:13px;
+      }
+
+      .menu-btn,
+      .close-btn,
+      .icon-btn{
+        width:40px;
+        height:40px;
+        font-size:16px;
+      }
+
+      .container{
+        padding:16px;
+        padding-top:108px;
+      }
+
+      .title{
+        font-size:24px;
+        margin-bottom:4px;
+      }
+
+      .subtitle{
+        font-size:13px;
+        margin-bottom:16px;
+      }
+
+      .search{
+        padding:10px;
+        font-size:13px;
+        margin-bottom:14px;
+      }
+
+      .chips{
+        gap:8px;
+        margin-bottom:14px;
+      }
+
+      .chip{
+        padding:7px 12px;
+        font-size:12px;
+      }
+
+      .examples-label{
+        font-size:12px;
+        margin:10px 0 8px;
+      }
+
+      .create-center{
+        margin:4px 0 18px;
+      }
+
+      .cards{
+        grid-template-columns:1fr;
+        gap:12px;
+      }
+
+      .card{
+        padding:14px;
+      }
+
+      .card strong{
+        font-size:15px;
+      }
+
+      .card small{
+        font-size:11px;
+      }
+
+      .detail{
+        padding:14px;
+        margin-top:14px;
+      }
+
+      .detail-title{
+        font-size:18px;
+        margin-bottom:8px;
+      }
+
+      .detail input{
+        padding:10px;
+        font-size:13px;
+        margin-bottom:10px;
+      }
+
+      .edit-title-row{
+        gap:8px;
+        margin-bottom:8px;
+      }
+
+      .items{
+        gap:8px;
+        margin-top:4px;
+        margin-bottom:8px;
+      }
+
+      .item-row{
+        padding:8px 10px;
+        font-size:13px;
+      }
+
+      .detail-actions{
+        flex-direction:column;
+        gap:8px;
+        margin-top:4px;
+      }
+
+      .actions-left,
+      .actions-right{
+        width:100%;
+        justify-content:stretch;
+      }
+
+      .actions-left button,
+      .actions-right button{
+        flex:1;
+      }
+
+      .btn-soft{
+        padding:10px 14px;
+        font-size:12px;
+      }
+
+      .inline-add{
+        gap:8px;
+        margin-top:4px;
+      }
+
+      .inline-add input{
+        font-size:13px;
+        padding:10px;
+      }
+
+      .modal{
+        padding:14px;
+      }
+
+      .modal h2{
+        font-size:20px;
+        margin-bottom:4px;
+      }
+
+      .modal p{
+        font-size:12px;
+        margin-bottom:10px;
+      }
+
+      .field label{
+        font-size:10px;
+        margin-bottom:4px;
+      }
+
+      .modal input[type="text"]{
+        padding:10px;
+        font-size:13px;
+        margin-bottom:8px;
+      }
+
+      .modal-items{
+        gap:8px;
+        margin:6px 0 8px;
+      }
+
+      .modal-actions{
+        gap:8px;
+        margin-top:8px;
+      }
+
+      .btn-lite{
+        padding:10px 14px;
+        font-size:12px;
+        flex:1;
+        min-width:100px;
+      }
+
+      .sidebar{
+        width:min(300px,88vw);
+        padding:16px 14px;
+      }
+
+      .side-link{
+        padding:11px 12px;
+        font-size:14px;
+      }
+    }
+
+    @media (max-width: 480px){
+      .container{
+        padding:12px;
+        padding-top:102px;
+      }
+
+      .title{
+        font-size:20px;
+      }
+
+      .subtitle{
+        font-size:12px;
+        margin-bottom:12px;
+      }
+
+      .search{
+        padding:9px;
+        font-size:12px;
+        margin-bottom:12px;
+      }
+
+      .chips{
+        gap:6px;
+        margin-bottom:12px;
+      }
+
+      .chip{
+        padding:6px 10px;
+        font-size:11px;
+      }
+
+      .examples-label{
+        font-size:11px;
+        gap:6px;
+      }
+
+      .examples-label span{
+        width:18px;
+        height:18px;
+        font-size:11px;
+      }
+
+      .card{
+        padding:12px;
+      }
+
+      .card strong{
+        font-size:14px;
+      }
+
+      .card small{
+        font-size:10px;
+        margin-top:4px;
+      }
+
+      .detail{
+        padding:12px;
+        margin-top:12px;
+      }
+
+      .detail-title{
+        font-size:16px;
+      }
+
+      .detail input{
+        padding:9px;
+        font-size:12px;
+      }
+
+      .edit-title-row{
+        gap:6px;
+        flex-wrap:wrap;
+      }
+
+      .edit-title-row input{
+        flex:1;
+        min-width:200px;
+      }
+
+      .icon-btn{
+        width:36px;
+        height:36px;
+        font-size:14px;
+      }
+
+      .item-row{
+        padding:7px 9px;
+        font-size:12px;
+        gap:8px;
+      }
+
+      .item-row input[type="checkbox"]{
+        width:14px;
+        height:14px;
+      }
+
+      .btn-soft{
+        padding:9px 12px;
+        font-size:11px;
+      }
+
+      .inline-add{
+        gap:6px;
+        flex-wrap:wrap;
+      }
+
+      .inline-add input{
+        font-size:12px;
+        padding:9px;
+      }
+
+      .inline-add button{
+        flex:1;
+        min-width:100px;
+      }
+
+      .overlay{
+        padding:12px;
+      }
+
+      .modal{
+        padding:12px;
+      }
+
+      .modal h2{
+        font-size:18px;
+      }
+
+      .modal p{
+        font-size:11px;
+      }
+
+      .field label{
+        font-size:9px;
+      }
+
+      .modal input[type="text"]{
+        padding:9px;
+        font-size:12px;
+      }
+
+      .modal-actions{
+        gap:6px;
+      }
+
+      .btn-lite,
+      .modal-actions .btn-soft{
+        padding:9px 12px;
+        font-size:11px;
+      }
+
+      .hint-empty,
+      .empty{
+        font-size:12px;
+        padding:10px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-line"></div>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="sidebar" aria-hidden="true">
+    <div class="sidebar-top">
+      <div class="sidebar-title">Menu</div>
+      <button class="close-btn" id="closeSidebar" type="button" aria-label="Fechar menu">✕</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="side-link" href="/home">Home</a>
+      <a class="side-link" href="/agenda">Agenda</a>
+      <a class="side-link active" href="/listas">Listas</a>
+      <a class="side-link" href="/documentos">Documentos</a>
+      <a class="side-link" href="/perfil">Perfil</a>
+      <a class="side-link" href="/emergencia">Emergência</a>
+      <a class="side-link" href="/">Sair</a>
+    </nav>
+
+    <div class="sidebar-footer">GestarBem • organize tudo com leveza</div>
+  </aside>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand-mini">GestarBem</div>
+      <div class="nav-actions">
+        <button class="menu-btn" id="openMenuBtn" type="button" aria-label="Abrir menu">☰</button>
+        <a class="btn-square" href="/home">Voltar</a>
+        <a class="btn-square" href="/">Sair</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="title">Minhas listas</div>
+    <div class="subtitle">Organize suas ideias e cuidados do seu jeitinho.</div>
+
+    <input id="search" class="search" placeholder="Buscar lista…">
+
+    <div class="chips" id="chips">
+      <div class="chip" data-fill="Enxoval" data-type="Enxoval">Enxoval</div>
+      <div class="chip" data-fill="Consultas" data-type="Consultas">Consultas</div>
+      <div class="chip" data-fill="Compras" data-type="Compras">Compras</div>
+      <div class="chip" data-fill="Mala maternidade" data-type="Mala maternidade">Mala maternidade</div>
+      <div class="chip" data-fill="Exames" data-type="Exames">Exames</div>
+    </div>
+
+    <div class="examples-label">
+      <span>i</span>
+      <div>Essas listas são apenas exemplos para te ajudar 💗</div>
+    </div>
+
+    <div class="create-center">
+      <button class="btn-square" id="fab" type="button">Criar lista</button>
+    </div>
+
+    <div class="cards" id="cards"></div>
+
+    <div class="detail" id="detail">
+      <div class="detail-title">Detalhe da lista</div>
+
+      <div class="edit-title-row">
+        <input id="listTitle" placeholder="Título da lista">
+        <button class="icon-btn" type="button" id="focusTitleBtn" aria-label="Editar título">✎</button>
+      </div>
+
+      <div class="items" id="items"></div>
+
+      <div class="hint-empty" id="emptyItems" style="display:none;">
+        Ainda não tem nada por aqui — quer adicionar seu primeiro item? 💗
+      </div>
+
+      <div class="inline-add" id="inlineAddDetail">
+        <input id="detailNewItem" type="text" placeholder="Novo item…">
+        <button class="btn-soft" type="button" id="detailAddBtn">Adicionar</button>
+      </div>
+
+      <div class="detail-actions">
+        <div class="actions-left">
+          <button class="btn-soft" type="button" id="openInlineDetail">Adicionar item</button>
+        </div>
+        <div class="actions-right">
+          <button class="btn-soft btn-danger" type="button" onclick="deleteList()">Excluir lista</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="overlay" id="createOverlay" role="dialog" aria-modal="true" aria-label="Criar lista">
+    <div class="modal">
+      <h2>Criar lista</h2>
+      <p>Crie uma lista do seu jeitinho — bem simples e leve.</p>
+
+      <div class="field">
+        <label>Tipo de lista (obrigatório)</label>
+
+        <div class="chips" id="typeChips" style="margin:0 0 12px; padding-bottom:0;">
+          <div class="chip" data-type="Enxoval">🍼 Enxoval do bebê</div>
+          <div class="chip" data-type="Mala maternidade">🏥 Mala maternidade</div>
+          <div class="chip" data-type="Consultas">📋 Consultas</div>
+          <div class="chip" data-type="Exames">🧪 Exames</div>
+          <div class="chip" data-type="Compras">🛒 Compras</div>
+          <div class="chip" data-type="Organização">🧠 Organização</div>
+        </div>
+
+        <input id="createType" type="text" placeholder="Selecione um tipo acima" readonly>
+      </div>
+
+      <div class="field">
+        <label>Título da lista</label>
+        <input id="createTitle" type="text" placeholder="Título da lista">
+      </div>
+
+      <div class="modal-items" id="createItems"></div>
+
+      <div class="hint-empty" id="createEmptyHint">
+        Você pode adicionar itens com calma, um de cada vez.
+      </div>
+
+      <div class="inline-add" id="inlineAddCreate">
+        <input id="createNewItem" type="text" placeholder="Novo item…">
+        <button class="btn-soft" type="button" id="createAddBtn">Adicionar</button>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-lite" type="button" id="createCancel">Cancelar</button>
+        <button class="btn-soft" type="button" id="createOpenAdd">Adicionar item</button>
+        <button class="btn-soft" type="button" id="createSave">Salvar lista</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const openMenuBtn = document.getElementById("openMenuBtn");
+    const closeSidebar = document.getElementById("closeSidebar");
+
+    function openMenu(){
+      sidebar.classList.add("open");
+      sidebarOverlay.classList.add("open");
+      sidebar.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeMenu(){
+      sidebar.classList.remove("open");
+      sidebarOverlay.classList.remove("open");
+      sidebar.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    openMenuBtn?.addEventListener("click", openMenu);
+    closeSidebar?.addEventListener("click", closeMenu);
+    sidebarOverlay?.addEventListener("click", closeMenu);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeMenu();
+      }
+    });
+
+    sidebar.querySelectorAll("a").forEach(a => {
+      a.addEventListener("click", () => {
+        if (window.innerWidth <= 768) closeMenu();
+      });
+    });
+
+    const LS_KEY = "gestarbem_lists_v1";
+
+    let lists = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    let current = null;
+
+    lists = lists.map(l => ({
+      id: l.id || ("l_" + Math.random().toString(16).slice(2)),
+      title: (l.title ?? l.titulo ?? "Lista").toString(),
+      type: (l.type ?? l.tipo ?? "").toString(),
+      createdAt: l.createdAt || l.criado_em || Date.now(),
+      updatedAt: l.updatedAt || l.atualizado_em || Date.now(),
+      items: Array.isArray(l.items) ? l.items.map(it => ({
+        text: (it.text ?? it.texto ?? "").toString(),
+        done: !!(it.done ?? it.concluido)
+      })) : []
+    }));
+
+    const cardsEl = document.getElementById("cards");
+    const detailEl = document.getElementById("detail");
+    const listTitleEl = document.getElementById("listTitle");
+    const focusTitleBtn = document.getElementById("focusTitleBtn");
+    const itemsEl = document.getElementById("items");
+    const emptyItemsEl = document.getElementById("emptyItems");
+    const searchEl = document.getElementById("search");
+    const fabEl = document.getElementById("fab");
+    const chipsEl = document.getElementById("chips");
+
+    const overlay = document.getElementById("createOverlay");
+    const createType = document.getElementById("createType");
+    const typeChips = document.getElementById("typeChips");
+    const createTitle = document.getElementById("createTitle");
+    const createItems = document.getElementById("createItems");
+    const createEmptyHint = document.getElementById("createEmptyHint");
+    const inlineAddCreate = document.getElementById("inlineAddCreate");
+    const createNewItem = document.getElementById("createNewItem");
+    const createAddBtn = document.getElementById("createAddBtn");
+    const createOpenAdd = document.getElementById("createOpenAdd");
+    const createCancel = document.getElementById("createCancel");
+    const createSave = document.getElementById("createSave");
+
+    const inlineAddDetail = document.getElementById("inlineAddDetail");
+    const detailNewItem = document.getElementById("detailNewItem");
+    const detailAddBtn = document.getElementById("detailAddBtn");
+    const openInlineDetail = document.getElementById("openInlineDetail");
+
+    function save() {
+      localStorage.setItem(LS_KEY, JSON.stringify(lists));
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatPreview(list) {
+      const previewItems = list.items.slice(0, 2).map(i => i.text).filter(Boolean);
+      return previewItems.length ? previewItems.join(", ") : "Sem itens por enquanto";
+    }
+
+    function renderLists(filter = "") {
+      cardsEl.innerHTML = "";
+
+      let filtered = lists;
+      if (filter.trim()) {
+        const q = filter.trim().toLowerCase();
+        filtered = lists.filter(l =>
+          l.title.toLowerCase().includes(q) ||
+          (l.type || "").toLowerCase().includes(q)
+        );
+      }
+
+      if (!filtered.length) {
+        cardsEl.innerHTML = `
+          <div class="empty">
+            Você ainda não criou nenhuma lista.<br>
+            Quando quiser, clique em <strong>Criar lista</strong> 💗
+          </div>`;
+        return;
+      }
+
+      filtered.forEach((l) => {
+        const idx = lists.findIndex(x => x.id === l.id);
+        const card = document.createElement("div");
+        card.className = "card";
+        const smallText = l.type ? `${l.type} • ${formatPreview(l)}` : formatPreview(l);
+
+        card.innerHTML = `
+          <strong>${escapeHtml(l.title)}</strong><br>
+          <small>${escapeHtml(smallText)}</small>
+        `;
+        card.onclick = () => openList(idx);
+        cardsEl.appendChild(card);
+      });
+    }
+
+    function openList(i) {
+      current = i;
+      detailEl.style.display = "block";
+      listTitleEl.value = lists[i].title;
+
+      inlineAddDetail.classList.remove("show");
+      detailNewItem.value = "";
+
+      renderItems();
+      detailEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderItems() {
+      itemsEl.innerHTML = "";
+
+      if (current === null || !lists[current]) return;
+
+      const list = lists[current];
+
+      emptyItemsEl.style.display = list.items.length ? "none" : "block";
+
+      list.items.forEach((it, idx) => {
+        const row = document.createElement("div");
+        row.className = "item-row";
+
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.checked = !!it.done;
+        cb.addEventListener("change", () => toggleItem(idx));
+
+        const text = document.createElement("div");
+        text.className = "item-text" + (it.done ? " done" : "");
+        text.textContent = it.text;
+
+        row.appendChild(cb);
+        row.appendChild(text);
+        itemsEl.appendChild(row);
+      });
+    }
+
+    function toggleItem(idx) {
+      if (current === null || !lists[current]) return;
+
+      const list = lists[current];
+      list.items[idx].done = !list.items[idx].done;
+      list.updatedAt = Date.now();
+
+      save();
+      renderItems();
+      renderLists(searchEl.value);
+    }
+
+    let draftItems = [];
+
+    function setType(type) {
+      const t = (type || "").trim();
+      createType.value = t;
+
+      typeChips?.querySelectorAll(".chip").forEach(c => {
+        const ct = (c.getAttribute("data-type") || "").trim();
+        c.classList.toggle("is-active", ct.toLowerCase() === t.toLowerCase());
+      });
+    }
+
+    function openCreateModal(prefillTitle = "", prefillType = "") {
+      draftItems = [];
+      createTitle.value = prefillTitle || "";
+      createItems.innerHTML = "";
+      createEmptyHint.style.display = "block";
+      inlineAddCreate.classList.remove("show");
+      createNewItem.value = "";
+
+      setType(prefillType || "");
+
+      overlay.classList.add("show");
+      document.body.style.overflow = "hidden";
+
+      setTimeout(() => {
+        if ((createType.value || "").trim()) createTitle.focus();
+      }, 30);
+    }
+
+    function closeCreateModal() {
+      overlay.classList.remove("show");
+      document.body.style.overflow = "";
+    }
+
+    function renderDraftItems() {
+      createItems.innerHTML = "";
+
+      if (!draftItems.length) {
+        createEmptyHint.style.display = "block";
+        return;
+      }
+
+      createEmptyHint.style.display = "none";
+
+      draftItems.forEach((it, idx) => {
+        const row = document.createElement("div");
+        row.className = "item-row";
+
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.checked = !!it.done;
+        cb.addEventListener("change", () => {
+          draftItems[idx].done = !draftItems[idx].done;
+          renderDraftItems();
+        });
+
+        const text = document.createElement("div");
+        text.className = "item-text" + (it.done ? " done" : "");
+        text.textContent = it.text;
+
+        row.appendChild(cb);
+        row.appendChild(text);
+        createItems.appendChild(row);
+      });
+    }
+
+    function openInlineCreate() {
+      inlineAddCreate.classList.add("show");
+      setTimeout(() => createNewItem.focus(), 30);
+    }
+
+    function addDraftItemFromInput() {
+      const val = createNewItem.value.trim();
+      if (!val) return;
+
+      draftItems.push({ text: val, done: false });
+      createNewItem.value = "";
+      renderDraftItems();
+      createNewItem.focus();
+    }
+
+    function saveNewList() {
+      const type = (createType.value || "").trim();
+      if (!type) {
+        typeChips?.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+
+      const title = createTitle.value.trim();
+      if (!title) {
+        createTitle.focus();
+        return;
+      }
+
+      const now = Date.now();
+
+      const newList = {
+        id: "l_" + Math.random().toString(16).slice(2),
+        title,
+        type,
+        createdAt: now,
+        updatedAt: now,
+        items: draftItems.map(it => ({
+          text: it.text,
+          done: !!it.done
+        }))
+      };
+
+      lists.unshift(newList);
+      current = 0;
+
+      save();
+      renderLists(searchEl.value);
+      closeCreateModal();
+      renderItems();
+    }
+
+    function openInlineAddDetail() {
+      if (current === null || !lists[current]) return;
+
+      inlineAddDetail.classList.add("show");
+      setTimeout(() => detailNewItem.focus(), 30);
+    }
+
+    function addDetailItem() {
+      if (current === null || !lists[current]) return;
+
+      const val = detailNewItem.value.trim();
+      if (!val) return;
+
+      lists[current].items.push({ text: val, done: false });
+      lists[current].updatedAt = Date.now();
+
+      save();
+
+      detailNewItem.value = "";
+      renderItems();
+      renderLists(searchEl.value);
+      detailNewItem.focus();
+    }
+
+    function deleteList() {
+      if (current === null || !lists[current]) return;
+
+      const ok = confirm("Tem certeza que deseja excluir esta lista?");
+      if (!ok) return;
+
+      lists.splice(current, 1);
+      current = null;
+
+      save();
+
+      detailEl.style.display = "none";
+      renderLists(searchEl.value);
+    }
+
+    window.deleteList = deleteList;
+
+    fabEl.addEventListener("click", () => openCreateModal());
+
+    chipsEl.addEventListener("click", (e) => {
+      const chip = e.target.closest(".chip");
+      if (!chip) return;
+
+      const t = chip.getAttribute("data-fill") || chip.textContent.trim();
+      const ty = chip.getAttribute("data-type") || t;
+
+      openCreateModal(t, ty);
+    });
+
+    typeChips?.addEventListener("click", (e) => {
+      const chip = e.target.closest(".chip");
+      if (!chip) return;
+
+      const ty = chip.getAttribute("data-type") || chip.textContent.trim();
+      setType(ty);
+
+      if (!createTitle.value.trim()) createTitle.value = ty;
+      setTimeout(() => createTitle.focus(), 30);
+    });
+
+    searchEl.addEventListener("input", () => renderLists(searchEl.value));
+
+    focusTitleBtn.addEventListener("click", () => listTitleEl.focus());
+
+    listTitleEl.addEventListener("input", () => {
+      if (current === null || !lists[current]) return;
+
+      lists[current].title = listTitleEl.value;
+      lists[current].updatedAt = Date.now();
+
+      save();
+      renderLists(searchEl.value);
+    });
+
+    createOpenAdd.addEventListener("click", openInlineCreate);
+    createAddBtn.addEventListener("click", addDraftItemFromInput);
+
+    createNewItem.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addDraftItemFromInput();
+      }
+
+      if (e.key === "Escape") {
+        inlineAddCreate.classList.remove("show");
+        createNewItem.value = "";
+        createTitle.focus();
+      }
+    });
+
+    createCancel.addEventListener("click", closeCreateModal);
+    createSave.addEventListener("click", saveNewList);
+
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeCreateModal();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay.classList.contains("show")) {
+        closeCreateModal();
+      }
+    });
+
+    openInlineDetail.addEventListener("click", openInlineAddDetail);
+    detailAddBtn.addEventListener("click", addDetailItem);
+
+    detailNewItem.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addDetailItem();
+      }
+
+      if (e.key === "Escape") {
+        inlineAddDetail.classList.remove("show");
+        detailNewItem.value = "";
+      }
+    });
+
+    save();
+    renderLists();
+    renderDraftItems();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GestarBem • Início</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #ffe9ef;
+      --neutral: #faf7f3;
+      --white: #ffffff;
+      --text: #111111;
+      --muted: rgba(17, 17, 17, 0.65);
+      --card: rgba(255, 255, 255, 0.86);
+      --border: rgba(17, 17, 17, 0.12);
+      --shadow: 0 18px 60px rgba(0, 0, 0, 0.12);
+      --radius: 10px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: "Barlow", sans-serif;
+      background: var(--neutral);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .top-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 9999;
+    }
+
+    /* HEADER camuflado */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9998;
+      padding: 18px 40px;
+      background: transparent;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      background: rgba(255, 233, 239, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand-mini {
+      font-family: "Barlow Condensed", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--text);
+      opacity: 0.9;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link {
+      font-weight: 500;
+      color: rgba(17, 17, 17, 0.78);
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-square {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 2px;
+      background: var(--primary);
+      color: #000;
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      font-weight: 500;
+      min-width: 110px;
+      transition: 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .btn-square:hover {
+      filter: brightness(0.98);
+      transform: translateY(-1px);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px 70px;
+      position: relative;
+
+      background:
+        linear-gradient(rgba(250, 247, 243, 0.72), rgba(250, 247, 243, 0.72)),
+        url("./static/img/foto_barriga.png"),
+        url("./static/img/fotobarriga.png"),
+        url("./static/img/foto_sapato.png"),
+        url("./static/img/fotosapato.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .hero-card {
+      width: min(560px, 100%);
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 44px 46px;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-family: "Barlow Condensed", sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 66px;
+      line-height: 1;
+      margin-bottom: 14px;
+      letter-spacing: 0.8px;
+    }
+
+    .hero-subtitle {
+      font-size: 18.2px;
+      color: var(--muted);
+      margin-bottom: 26px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    section {
+      padding: 70px 40px;
+      background: var(--neutral);
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: "Barlow Condensed", sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 25.6px;
+      letter-spacing: 0.6px;
+      margin-bottom: 18px;
+    }
+
+    .section-subtitle {
+      font-size: 16.3px;
+      color: var(--muted);
+      margin-bottom: 26px;
+      max-width: 820px;
+    }
+
+    .services-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .carousel-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 2px;
+      background: rgba(255, 233, 239, 0.85);
+      border: 1px solid rgba(17, 17, 17, 0.12);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: 0.2s ease;
+      user-select: none;
+    }
+
+    .carousel-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(0.98);
+    }
+
+    .carousel {
+      width: min(720px, 100%);
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(17, 17, 17, 0.10);
+      box-shadow: 0 14px 45px rgba(0, 0, 0, 0.08);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.6s ease;
+      will-change: transform;
+    }
+
+    .service-card {
+      min-width: 100%;
+      padding: 34px 34px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      text-align: left;
+      background:
+        radial-gradient(circle at top left, rgba(255, 233, 239, 0.65), rgba(255, 255, 255, 0.0) 45%),
+        rgba(255, 255, 255, 0.72);
+    }
+
+    .service-title {
+      font-family: "Barlow Condensed", sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-size: 25.6px;
+    }
+
+    .service-text {
+      font-size: 16.3px;
+      color: rgba(17, 17, 17, 0.72);
+      max-width: 780px;
+    }
+
+    .service-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .tag {
+      font-size: 12.3px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255, 233, 239, 0.9);
+      border: 1px solid rgba(17, 17, 17, 0.10);
+      color: rgba(17, 17, 17, 0.78);
+      user-select: none;
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(17, 17, 17, 0.16);
+      cursor: pointer;
+      transition: 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+    }
+
+    .dot.active {
+      background: rgba(17, 17, 17, 0.45);
+    }
+
+    .about-card {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(17, 17, 17, 0.10);
+      border-radius: var(--radius);
+      padding: 28px 28px;
+      box-shadow: 0 14px 45px rgba(0, 0, 0, 0.06);
+    }
+
+    .about-text {
+      font-size: 16.3px;
+      color: rgba(17, 17, 17, 0.75);
+      line-height: 1.65;
+      max-width: 980px;
+    }
+
+    .contact {
+      position: relative;
+      background:
+        linear-gradient(rgba(250, 247, 243, 0.82), rgba(250, 247, 243, 0.82)),
+        url("./static/img/fotosapatos.png"),
+        url("./static/img/foto_sapato.png"),
+        url("./static/img/fotosapato.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .contact-card {
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(17, 17, 17, 0.10);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.10);
+      padding: 28px 28px;
+    }
+
+    .contact-help {
+      background: rgba(255, 233, 239, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: var(--radius);
+      padding: 26px 26px;
+    }
+
+    .help-title {
+      font-family: "Barlow Condensed", sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 25.6px;
+      letter-spacing: 0.6px;
+      margin-bottom: 10px;
+    }
+
+    .help-text {
+      font-size: 16.3px;
+      color: rgba(17, 17, 17, 0.72);
+      line-height: 1.6;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    label {
+      font-size: 12.3px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      color: rgba(17, 17, 17, 0.75);
+      text-transform: uppercase;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 2px;
+      border: 1px solid rgba(17, 17, 17, 0.18);
+      outline: none;
+      font-family: "Barlow", sans-serif;
+      font-size: 16.3px;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    footer {
+      padding: 24px 40px 36px;
+      background: var(--neutral);
+      color: rgba(17, 17, 17, 0.65);
+      font-size: 12.3px;
+      text-align: center;
+    }
+
+    @media (max-width: 920px) {
+      header {
+        padding: 18px 18px;
+      }
+
+      .hero {
+        padding: 110px 18px 60px;
+      }
+
+      section {
+        padding: 60px 18px;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .header-inner {
+        gap: 12px;
+      }
+
+      nav {
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="top-line"></div>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand-mini">GestarBem</div>
+
+      <nav>
+        <a class="nav-link" href="#sobre">Sobre</a>
+        <a class="nav-link" href="#servicos">Serviços</a>
+
+        <div class="nav-actions">
+          <a class="btn-square" href="/cadastro">Cadastro</a>
+          <a class="btn-square" href="/login">Login</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hero" id="inicio">
+    <div class="hero-card">
+      <div class="hero-title">GESTAR BEM</div>
+      <div class="hero-subtitle">Cuidando de você em cada passo da sua gestação</div>
+
+      <div class="hero-actions">
+        <a class="btn-square" href="#servicos">Ver serviços</a>
+        <a class="btn-square" href="#contato">Fale conosco</a>
+      </div>
+    </div>
+  </main>
+
+
+  <section id="servicos">
+    <div class="section-inner">
+      <div class="section-title">Serviços</div>
+      <div class="section-subtitle">
+        Funções pensadas para organizar sua rotina com leveza, mantendo tudo em um só lugar.
+      </div>
+
+      <div class="services-wrap">
+        <button class="carousel-btn" id="prevBtn" aria-label="Anterior">‹</button>
+
+        <div class="carousel" id="carousel">
+          <div class="carousel-track" id="track">
+
+            <article class="service-card">
+              <div class="service-title">Anexar exames e documentos</div>
+              <div class="service-text">
+                Guarde exames, laudos e arquivos importantes de forma prática para consultar quando precisar.
+              </div>
+              <div class="service-tags">
+                <span class="tag">Organização</span>
+                <span class="tag">Exames</span>
+                <span class="tag">Arquivos</span>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-title">Scanner de documentos</div>
+              <div class="service-text">
+                Digitalize e mantenha seus documentos sempre acessíveis, com um fluxo simples e rápido.
+              </div>
+              <div class="service-tags">
+                <span class="tag">Praticidade</span>
+                <span class="tag">Digitalização</span>
+                <span class="tag">Acesso rápido</span>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-title">Informações gestacionais</div>
+              <div class="service-text">
+                Informações organizadas para acompanhar cada fase com mais segurança e tranquilidade.
+              </div>
+              <div class="service-tags">
+                <span class="tag">Acolhimento</span>
+                <span class="tag">Rotina</span>
+                <span class="tag">Fases</span>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-title">Agenda e lembretes</div>
+              <div class="service-text">
+                Tenha consultas e tarefas reunidas em um lugar só, para facilitar o seu dia a dia.
+              </div>
+              <div class="service-tags">
+                <span class="tag">Consultas</span>
+                <span class="tag">Lembretes</span>
+                <span class="tag">Planejamento</span>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <button class="carousel-btn" id="nextBtn" aria-label="Próximo">›</button>
+      </div>
+
+      <div class="carousel-dots" id="dots"></div>
+    </div>
+  </section>
+
+  <section id="sobre">
+    <div class="section-inner">
+      <div class="section-title">Sobre</div>
+      <div class="section-subtitle">
+        Um projeto acolhedor, criado para diminuir a sobrecarga de informações e tarefas durante a gestação.
+      </div>
+
+      <div class="about-card">
+        <p class="about-text">
+          O <strong>Gestar Bem</strong> é um site criado por alunos programadores com o objetivo de apoiar mulheres no
+          processo da maternidade, independentemente da idade. Sabemos que, durante a gestação, existe um excesso de
+          informações, exames, tarefas e responsabilidades — e isso pode gerar ansiedade e desorganização.
+          <br><br>
+          Pensando nisso, o Gestar Bem foi desenvolvido para <strong>organizar</strong>, <strong>acolher</strong> e
+          <strong>facilitar</strong> a rotina das gestantes, reunindo funções essenciais em um ambiente leve, delicado e
+          confiável.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contato">
+    <div class="section-inner">
+      <div class="section-title">Contato</div>
+      <div class="section-subtitle">
+        Use o formulário abaixo para enviar dúvidas, ideias ou recomendações. Vamos adorar te ouvir.
+      </div>
+
+      <div class="contact-grid">
+
+        <div class="contact-card">
+          <form>
+            <div>
+              <label for="nome">Nome</label>
+              <input id="nome" type="text" placeholder="Seu nome" />
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label for="email">E-mail</label>
+                <input id="email" type="email" placeholder="seuemail@gmail.com" />
+              </div>
+              <div>
+                <label for="telefone">Telefone</label>
+                <input id="telefone" type="tel" placeholder="(00) 00000-0000" />
+              </div>
+            </div>
+
+            <div>
+              <label for="mensagem">Mensagem</label>
+              <textarea id="mensagem" placeholder="Escreva sua mensagem..."></textarea>
+            </div>
+
+            <button class="btn-square" type="button">Enviar</button>
+          </form>
+        </div>
+
+        <div class="contact-help">
+          <div class="help-title">Como podemos ajudar?</div>
+          <p class="help-text">
+            Este formulário serve para <strong>dúvidas</strong>, <strong>ideias</strong> ou
+            <strong>recomendações</strong> sobre o Gestar Bem. Se você sentiu falta de alguma função, quer sugerir uma
+            melhoria ou precisa de orientação para usar o sistema, envie sua mensagem com calma — estamos aqui para
+            acolher.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © GestarBem • Plataforma de cuidado materno • Experiência digital acolhedora
+  </footer>
+
+  <script>
+    const track = document.getElementById("track");
+    const carousel = document.getElementById("carousel");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const dotsWrap = document.getElementById("dots");
+
+    const slides = Array.from(track.children);
+    let index = 0;
+    let intervalId = null;
+
+    function renderDots() {
+      dotsWrap.innerHTML = "";
+      slides.forEach((_, i) => {
+        const dot = document.createElement("div");
+        dot.className = "dot" + (i === index ? " active" : "");
+        dot.addEventListener("click", () => goTo(i, true));
+        dotsWrap.appendChild(dot);
+      });
+    }
+
+    function update() {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      const dots = Array.from(dotsWrap.children);
+      dots.forEach((d, i) => d.classList.toggle("active", i === index));
+    }
+
+    function goTo(i, manual = false) {
+      index = (i + slides.length) % slides.length;
+      update();
+      if (manual) restartAuto();
+    }
+
+    function next() { goTo(index + 1, true); }
+    function prev() { goTo(index - 1, true); }
+
+    prevBtn.addEventListener("click", prev);
+    nextBtn.addEventListener("click", next);
+
+    function startAuto() {
+      intervalId = setInterval(() => {
+        index = (index + 1) % slides.length;
+        update();
+      }, 4500);
+    }
+
+    function stopAuto() {
+      if (intervalId) clearInterval(intervalId);
+      intervalId = null;
+    }
+
+    function restartAuto() {
+      stopAuto();
+      startAuto();
+    }
+
+    carousel.addEventListener("mouseenter", stopAuto);
+    carousel.addEventListener("mouseleave", startAuto);
+
+    renderDots();
+    update();
+    startAuto();
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GestarBem • Emergência</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#ffe9ef;
+      --primary-2:#ffd4e0;
+      --neutral:#faf7f3;
+      --white:#ffffff;
+      --text:#111111;
+      --muted:rgba(17,17,17,0.65);
+      --border:rgba(17,17,17,0.12);
+      --card:rgba(255,255,255,0.86);
+      --danger:#fff2f4;
+      --danger-border:#f0b7c4;
+      --shadow:0 18px 60px rgba(0,0,0,0.12);
+      --radius:10px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html,body{
+      height:100%;
+    }
+
+    body{
+      font-family:"Barlow",sans-serif;
+      background:var(--neutral);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    button,
+    input,
+    select,
+    textarea{
+      font:inherit;
+    }
+
+    .top-line{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:2px;
+      background:rgba(255,255,255,0.9);
+      z-index:9999;
+    }
+
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:9998;
+      padding:18px 40px;
+      background:transparent;
+    }
+
+    .header-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:12px 16px;
+      border-radius:var(--radius);
+      background:rgba(255,233,239,0.18);
+      border:1px solid rgba(255,255,255,0.55);
+      backdrop-filter:blur(10px);
+    }
+
+    .brand-mini{
+      font-family:"Barlow Condensed",sans-serif;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      opacity:.9;
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .menu-btn{
+      width:44px;
+      height:44px;
+      border-radius:2px;
+      background:rgba(255,233,239,0.85);
+      border:1px solid rgba(17,17,17,0.12);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:.2s ease;
+      user-select:none;
+      font-size:20px;
+      line-height:1;
+    }
+
+    .menu-btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(.98);
+    }
+
+    .btn-square{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:2px;
+      background:var(--primary);
+      color:#000;
+      border:1px solid rgba(17,17,17,0.12);
+      font-weight:500;
+      min-width:110px;
+      transition:.2s ease;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    .btn-square:hover{
+      filter:brightness(.98);
+      transform:translateY(-1px);
+    }
+
+    .btn-square.secondary{
+      background:rgba(255,255,255,0.9);
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.25);
+      opacity:0;
+      pointer-events:none;
+      transition:.2s ease;
+      z-index:10020;
+    }
+
+    .overlay.open{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .sidebar{
+      position:fixed;
+      top:0;
+      left:0;
+      height:100%;
+      width:min(320px,86vw);
+      background:rgba(255,255,255,0.88);
+      border-right:1px solid rgba(17,17,17,0.10);
+      backdrop-filter:blur(12px);
+      transform:translateX(-105%);
+      transition:.25s ease;
+      z-index:10030;
+      padding:18px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .sidebar.open{
+      transform:translateX(0);
+    }
+
+    .sidebar-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 10px;
+      border-radius:var(--radius);
+      background:rgba(255,233,239,0.35);
+      border:1px solid rgba(17,17,17,0.08);
+    }
+
+    .sidebar-brand{
+      font-family:"Barlow Condensed",sans-serif;
+      font-size:22px;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+    }
+
+    .close-btn{
+      width:40px;
+      height:40px;
+      border:none;
+      background:rgba(255,255,255,0.9);
+      border:1px solid rgba(17,17,17,0.10);
+      border-radius:2px;
+      cursor:pointer;
+      font-size:20px;
+      line-height:1;
+    }
+
+    .side-group{
+      display:grid;
+      gap:10px;
+    }
+
+    .side-link{
+      display:flex;
+      align-items:center;
+      padding:14px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.72);
+      border:1px solid rgba(17,17,17,0.08);
+      transition:.2s ease;
+      font-size:15px;
+      font-weight:500;
+    }
+
+    .side-link:hover{
+      transform:translateX(2px);
+      background:rgba(255,233,239,0.42);
+    }
+
+    .side-link.active{
+      background:rgba(255,212,224,0.58);
+      border-color:rgba(17,17,17,0.12);
+    }
+
+    .page{
+      min-height:100vh;
+      padding:120px 40px 40px;
+      background:
+        linear-gradient(rgba(250,247,243,0.82), rgba(250,247,243,0.82)),
+        url("../static/img/fotosapatos.png") center/cover no-repeat;
+    }
+
+    .page-inner{
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    .hero-card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,0.7);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:28px;
+      margin-bottom:18px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,233,239,0.72);
+      border:1px solid rgba(17,17,17,0.08);
+      font-size:12px;
+      margin-bottom:14px;
+    }
+
+    .hero-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .page-title{
+      font-family:"Barlow Condensed",sans-serif;
+      font-size:42px;
+      line-height:1;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      margin-bottom:8px;
+    }
+
+    .page-subtitle{
+      font-size:16px;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:760px;
+    }
+
+    .alert-card{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:16px;
+      margin-bottom:18px;
+    }
+
+    .alert-box,
+    .quick-box{
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(17,17,17,0.10);
+      border-radius:14px;
+      padding:20px;
+      box-shadow:0 14px 45px rgba(0,0,0,0.06);
+    }
+
+    .alert-box{
+      background:var(--danger);
+      border:1px solid var(--danger-border);
+    }
+
+    .card-title{
+      font-family:"Barlow Condensed",sans-serif;
+      font-size:24px;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      margin-bottom:10px;
+    }
+
+    .card-text{
+      font-size:15px;
+      line-height:1.6;
+      color:rgba(17,17,17,0.78);
+    }
+
+    .quick-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .quick-item{
+      background:rgba(255,255,255,0.76);
+      border:1px solid rgba(17,17,17,0.08);
+      border-radius:12px;
+      padding:14px;
+    }
+
+    .quick-label{
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      opacity:.7;
+      margin-bottom:5px;
+      font-weight:600;
+    }
+
+    .quick-value{
+      font-size:19px;
+      font-weight:600;
+      line-height:1.25;
+      word-break:break-word;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:16px;
+    }
+
+    .info-card{
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(17,17,17,0.10);
+      border-radius:14px;
+      padding:20px;
+      box-shadow:0 14px 45px rgba(0,0,0,0.05);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .info-card::after{
+      content:"";
+      position:absolute;
+      inset:-40px -40px auto auto;
+      width:220px;
+      height:220px;
+      background:radial-gradient(circle at center, rgba(255,233,239,0.70), rgba(255,255,255,0) 60%);
+      transform:translate(25%,-25%);
+      pointer-events:none;
+    }
+
+    .info-row{
+      display:grid;
+      gap:6px;
+    }
+
+    .info-label{
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      opacity:.7;
+      font-weight:600;
+    }
+
+    .info-value{
+      font-size:18px;
+      font-weight:600;
+      line-height:1.35;
+      word-break:break-word;
+    }
+
+    .info-text{
+      font-size:15px;
+      line-height:1.6;
+      color:rgba(17,17,17,0.76);
+      white-space:pre-line;
+      word-break:break-word;
+    }
+
+    .full{
+      grid-column:1 / -1;
+    }
+
+    .danger-note{
+      margin-top:18px;
+      background:rgba(255,233,239,0.45);
+      border:1px solid rgba(17,17,17,0.08);
+      border-radius:14px;
+      padding:18px;
+      font-size:14px;
+      line-height:1.6;
+      color:rgba(17,17,17,0.78);
+    }
+
+    .empty-value{
+      opacity:.5;
+      font-style:italic;
+      font-weight:400;
+    }
+
+    .edit-panel{
+      margin-top:18px;
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(17,17,17,0.10);
+      border-radius:14px;
+      padding:20px;
+      box-shadow:0 14px 45px rgba(0,0,0,0.05);
+      display:none;
+    }
+
+    .edit-panel.show{
+      display:block;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+    }
+
+    .field{
+      display:grid;
+      gap:6px;
+    }
+
+    .field.full{
+      grid-column:1 / -1;
+    }
+
+    .field label{
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      opacity:.8;
+      font-weight:600;
+    }
+
+    .field input,
+    .field textarea,
+    .field select{
+      width:100%;
+      padding:12px;
+      border:1px solid rgba(17,17,17,0.12);
+      border-radius:10px;
+      background:#fff;
+      font-family:"Barlow",sans-serif;
+      font-size:14px;
+      outline:none;
+    }
+
+    .field textarea{
+      min-height:100px;
+      resize:vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus{
+      border-color:rgba(255,212,224,0.95);
+      box-shadow:0 0 0 3px rgba(255,233,239,0.5);
+    }
+
+    .form-actions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    .toast{
+      position:fixed;
+      top:30px;
+      left:50%;
+      transform:translateX(-50%) translateY(-20px);
+      background:#ffffff;
+      color:#111;
+      padding:16px 26px;
+      border-radius:10px;
+      border:1px solid #ffd4e0;
+      box-shadow:0 10px 25px rgba(0,0,0,0.08);
+      font-size:14px;
+      font-weight:500;
+      opacity:0;
+      pointer-events:none;
+      transition:all .35s ease;
+      z-index:99999;
+      text-align:center;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media (max-width:920px){
+      header{
+        padding:18px 18px;
+      }
+
+      .page{
+        padding:110px 20px 30px;
+      }
+
+      .alert-card,
+      .content-grid,
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:640px){
+      .header-inner{
+        padding:10px 12px;
+      }
+
+      .btn-square{
+        min-width:auto;
+        padding:10px 14px;
+        font-size:13px;
+      }
+
+      .page-title{
+        font-size:32px;
+      }
+
+      .hero-card,
+      .alert-box,
+      .quick-box,
+      .info-card,
+      .edit-panel{
+        padding:16px;
+      }
+
+      .quick-grid{
+        grid-template-columns:1fr;
+      }
+
+      .quick-value{
+        font-size:17px;
+      }
+
+      .info-value{
+        font-size:16px;
+      }
+
+      .page-subtitle,
+      .card-text,
+      .info-text{
+        font-size:14px;
+      }
+
+      .form-actions{
+        justify-content:stretch;
+      }
+
+      .form-actions .btn-square{
+        width:100%;
+      }
+    }
+
+    @media (max-width:420px){
+      .page{
+        padding:102px 14px 24px;
+      }
+
+      .page-title{
+        font-size:28px;
+      }
+
+      .menu-btn{
+        width:40px;
+        height:40px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-line"></div>
+
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+    <div class="sidebar-top">
+      <div class="sidebar-brand">GestarBem</div>
+      <button class="close-btn" type="button" onclick="closeSidebar()">×</button>
+    </div>
+
+    <div class="side-group">
+      <a class="side-link" href="/home">
+        <span>Home</span>
+      </a>
+
+      <a class="side-link" href="/listas">
+        <span>Listas</span>
+      </a>
+
+      <a class="side-link" href="/agenda">
+        <span>Agenda</span>
+      </a>
+
+      <a class="side-link" href="/documentos">
+        <span>Documentos</span>
+      </a>
+
+      <a class="side-link active" href="/emergencia">
+        <span>Emergência</span>
+      </a>
+
+      <a class="side-link" href="/perfil">
+        <span>Perfil</span>
+      </a>
+
+      <a class="side-link" href="/">
+        <span>Sair</span>
+      </a>
+    </div>
+  </aside>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand-mini">GestarBem</div>
+
+      <div class="header-actions">
+        <div class="menu-btn" onclick="openSidebar()" aria-label="Abrir menu">☰</div>
+        <a class="btn-square" href="/home">Voltar</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-inner">
+
+      <section class="hero-card">
+        <div class="eyebrow">Informações rápidas para atendimento</div>
+
+        <div class="hero-top">
+          <div>
+            <h1 class="page-title">Emergência</h1>
+            <p class="page-subtitle">
+              Esta página reúne os dados mais importantes para leitura rápida em uma situação de urgência.
+              O objetivo é facilitar o atendimento com clareza, organização e acesso imediato às informações principais.
+            </p>
+          </div>
+
+          <button class="btn-square" type="button" id="editBtn">Editar informações</button>
+        </div>
+      </section>
+
+      <section class="alert-card">
+        <div class="alert-box">
+          <h2 class="card-title">Atenção imediata</h2>
+          <p class="card-text">
+            Em caso de dor intensa, sangramento, perda de líquido, falta de ar, febre alta,
+            desmaio ou qualquer sintoma preocupante, procure atendimento médico imediatamente.
+          </p>
+        </div>
+
+        <div class="quick-box">
+          <h2 class="card-title">Resumo rápido</h2>
+
+          <div class="quick-grid">
+            <div class="quick-item">
+              <div class="quick-label">Tipo sanguíneo</div>
+              <div class="quick-value" id="tipoSanguineoView">
+                {{ user.tipo_sanguineo if user.tipo_sanguineo else "Não informado" }}
+              </div>
+            </div>
+
+            <div class="quick-item">
+              <div class="quick-label">Semana gestacional</div>
+              <div class="quick-value">
+                {{ user.semana_gestacional if user.semana_gestacional else "Não informada" }}
+              </div>
+            </div>
+
+            <div class="quick-item">
+              <div class="quick-label">Idade</div>
+              <div class="quick-value" id="idadeView">
+                {{ user.idade if user.idade else "Não informada" }}
+              </div>
+            </div>
+
+            <div class="quick-item">
+              <div class="quick-label">Contato</div>
+              <div class="quick-value" id="contatoView">
+                {{ user.contato_emergencia if user.contato_emergencia else "Não informado" }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <article class="info-card">
+          <h2 class="card-title">Identificação</h2>
+
+          <div class="info-row">
+            <div class="info-label">Nome</div>
+            <div class="info-value">
+              {{ user.nome if user.nome else "Não informado" }}
+            </div>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <h2 class="card-title">Telefone</h2>
+
+          <div class="info-row">
+            <div class="info-label">Contato principal</div>
+            <div class="info-value">
+              {{ user.telefone if user.telefone else "Não informado" }}
+            </div>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <h2 class="card-title">Problemas de saúde</h2>
+
+          <div class="info-row">
+            <div class="info-label">Condições importantes</div>
+            <div class="info-text" id="problemasSaudeView">
+              {{ user.problemas_saude if user.problemas_saude else "Nenhuma informação cadastrada." }}
+            </div>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <h2 class="card-title">Alergias</h2>
+
+          <div class="info-row">
+            <div class="info-label">Alergias conhecidas</div>
+            <div class="info-text" id="alergiasView">
+              {{ user.alergias if user.alergias else "Nenhuma informação cadastrada." }}
+            </div>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <h2 class="card-title">Medicamentos em uso</h2>
+
+          <div class="info-row">
+            <div class="info-label">Uso contínuo ou recente</div>
+            <div class="info-text" id="medicamentosView">
+              {{ user.medicamentos if user.medicamentos else "Nenhuma informação cadastrada." }}
+            </div>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <h2 class="card-title">Contato de emergência</h2>
+
+          <div class="info-row">
+            <div class="info-label">Pessoa de referência</div>
+            <div class="info-value" id="contatoEmergenciaView">
+              {{ user.contato_emergencia if user.contato_emergencia else "Não informado" }}
+            </div>
+          </div>
+        </article>
+
+        <article class="info-card full">
+          <h2 class="card-title">Outras informações importantes</h2>
+
+          <div class="info-row">
+            <div class="info-label">Observações para atendimento</div>
+            <div class="info-text" id="infoImportantesView">
+              {{ user.info_importantes if user.info_importantes else "Nenhuma observação cadastrada." }}
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="edit-panel" id="editPanel">
+        <h2 class="card-title">Editar informações de emergência</h2>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="tipo_sanguineo">Tipo sanguíneo</label>
+            <input id="tipo_sanguineo" type="text" value="{{ user.tipo_sanguineo if user.tipo_sanguineo else '' }}" placeholder="Ex: O+, A-, AB+">
+          </div>
+
+          <div class="field">
+            <label for="idade">Idade</label>
+            <input id="idade" type="number" value="{{ user.idade if user.idade else '' }}" placeholder="Ex: 22">
+          </div>
+
+          <div class="field full">
+            <label for="problemas_saude">Problemas de saúde</label>
+            <textarea id="problemas_saude" placeholder="Ex: pressão alta, diabetes, anemia...">{{ user.problemas_saude if user.problemas_saude else '' }}</textarea>
+          </div>
+
+          <div class="field full">
+            <label for="alergias">Alergias</label>
+            <textarea id="alergias" placeholder="Ex: dipirona, penicilina...">{{ user.alergias if user.alergias else '' }}</textarea>
+          </div>
+
+          <div class="field full">
+            <label for="medicamentos">Medicamentos em uso</label>
+            <textarea id="medicamentos" placeholder="Ex: ácido fólico, ferro, vitamina...">{{ user.medicamentos if user.medicamentos else '' }}</textarea>
+          </div>
+
+          <div class="field full">
+            <label for="contato_emergencia">Contato de emergência</label>
+            <input id="contato_emergencia" type="text" value="{{ user.contato_emergencia if user.contato_emergencia else '' }}" placeholder="Ex: Mãe - (31) 99999-9999">
+          </div>
+
+          <div class="field full">
+            <label for="info_importantes">Outras informações importantes</label>
+            <textarea id="info_importantes" placeholder="Ex: histórico importante, orientações, observações...">{{ user.info_importantes if user.info_importantes else '' }}</textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-square secondary" type="button" id="cancelBtn">Cancelar</button>
+          <button class="btn-square" type="button" id="saveBtn">Salvar informações</button>
+        </div>
+      </section>
+
+      <div class="danger-note">
+        <strong>Observação:</strong> mantenha esta página sempre atualizada para facilitar o atendimento.
+        Informações como alergias, medicamentos, contato de emergência e histórico importante podem fazer diferença em uma situação urgente.
+      </div>
+
+    </div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
+    const editBtn = document.getElementById("editBtn");
+    const editPanel = document.getElementById("editPanel");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const saveBtn = document.getElementById("saveBtn");
+
+    function openSidebar(){
+      sidebar.classList.add("open");
+      overlay.classList.add("open");
+    }
+
+    function closeSidebar(){
+      sidebar.classList.remove("open");
+      overlay.classList.remove("open");
+    }
+
+    function showToast(message){
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
+    function openEditPanel(){
+      editPanel.classList.add("show");
+      editPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function closeEditPanel(){
+      editPanel.classList.remove("show");
+    }
+
+    editBtn.addEventListener("click", openEditPanel);
+    cancelBtn.addEventListener("click", closeEditPanel);
+
+    saveBtn.addEventListener("click", async () => {
+      const payload = {
+        tipo_sanguineo: document.getElementById("tipo_sanguineo").value.trim(),
+        idade: document.getElementById("idade").value.trim(),
+        problemas_saude: document.getElementById("problemas_saude").value.trim(),
+        alergias: document.getElementById("alergias").value.trim(),
+        medicamentos: document.getElementById("medicamentos").value.trim(),
+        contato_emergencia: document.getElementById("contato_emergencia").value.trim(),
+        info_importantes: document.getElementById("info_importantes").value.trim()
+      };
+
+      try {
+        const resp = await fetch("/api/emergencia", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          showToast(data.message || "Não foi possível salvar as informações.");
+          return;
+        }
+
+        document.getElementById("tipoSanguineoView").textContent = payload.tipo_sanguineo || "Não informado";
+        document.getElementById("idadeView").textContent = payload.idade || "Não informada";
+        document.getElementById("contatoView").textContent = payload.contato_emergencia || "Não informado";
+        document.getElementById("problemasSaudeView").textContent = payload.problemas_saude || "Nenhuma informação cadastrada.";
+        document.getElementById("alergiasView").textContent = payload.alergias || "Nenhuma informação cadastrada.";
+        document.getElementById("medicamentosView").textContent = payload.medicamentos || "Nenhuma informação cadastrada.";
+        document.getElementById("contatoEmergenciaView").textContent = payload.contato_emergencia || "Não informado";
+        document.getElementById("infoImportantesView").textContent = payload.info_importantes || "Nenhuma observação cadastrada.";
+
+        showToast(data.message || "Informações salvas com sucesso!");
+        closeEditPanel();
+      } catch (error) {
+        showToast("Não consegui conectar no servidor.");
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape"){
+        closeSidebar();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+
+<!-- ESSENCIAL PARA RESPONSIVIDADE -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GestarBem • Login</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Barlow',sans-serif;
+overflow-x:hidden; /* evita scroll horizontal */
+}
+
+.auth-container{
+min-height:100vh;
+background:url("../static/img/fotosapatos.png") center/cover no-repeat;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:40px;
+}
+
+.auth-form{
+background:rgba(255,255,255,0.9);
+padding:50px 45px;
+width:100%;
+max-width:380px;
+border-radius:8px;
+animation:fadeSlide .9s ease forwards;
+}
+
+.auth-form h1{
+font-family:'Barlow Condensed',sans-serif;
+text-align:center;
+margin-bottom:8px;
+font-size:32px;
+}
+
+.subtitle{
+text-align:center;
+font-size:13px;
+margin-bottom:30px;
+font-family:'Barlow',sans-serif;
+font-weight:400;
+}
+
+.subtitle a{
+color:#000;
+font-weight:500;
+text-decoration:none;
+}
+
+.auth-form label{
+font-size:11px;
+letter-spacing:1px;
+font-weight:500;
+}
+
+.auth-form input{
+width:100%;
+margin:6px 0 18px;
+padding:12px;
+border:1px solid #ccc;
+font-family:'Barlow',sans-serif;
+font-size:14px;
+border-radius:4px;
+}
+
+.auth-form button{
+width:100%;
+padding:14px;
+background:#ffd4e0;
+border:none;
+cursor:pointer;
+font-weight:500;
+margin-top:10px;
+font-size:15px;
+border-radius:4px;
+}
+
+@keyframes fadeSlide{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* ===== NOTIFICAÇÃO ===== */
+
+.toast{
+position:fixed;
+top:30px;
+left:50%;
+transform:translateX(-50%) translateY(-20px);
+background:#ffffff;
+color:#111;
+padding:16px 26px;
+border-radius:10px;
+border:1px solid #ffd4e0;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+font-size:14px;
+font-weight:500;
+opacity:0;
+pointer-events:none;
+transition:all .35s ease;
+z-index:9999;
+text-align:center;
+}
+
+.toast.show{
+opacity:1;
+transform:translateX(-50%) translateY(0);
+}
+
+/* ===== TABLET ===== */
+
+@media (max-width:1024px){
+
+.auth-container{
+padding:30px;
+}
+
+.auth-form{
+max-width:420px;
+}
+
+}
+
+/* ===== CELULAR ===== */
+
+@media (max-width:768px){
+
+.auth-container{
+padding:20px;
+background-position:center;
+}
+
+.auth-form{
+padding:35px 25px;
+max-width:100%;
+}
+
+.auth-form h1{
+font-size:28px;
+}
+
+.subtitle{
+font-size:12px;
+margin-bottom:25px;
+}
+
+.auth-form input{
+font-size:14px;
+padding:12px;
+}
+
+.auth-form button{
+padding:13px;
+font-size:14px;
+}
+
+}
+
+/* ===== CELULAR PEQUENO ===== */
+
+@media (max-width:480px){
+
+.auth-container{
+padding:15px;
+}
+
+.auth-form{
+padding:28px 20px;
+}
+
+.auth-form h1{
+font-size:24px;
+}
+
+.subtitle{
+font-size:11px;
+}
+
+.auth-form input{
+margin:5px 0 15px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<main class="auth-container">
+
+<form class="auth-form" id="formLogin">
+
+<h1>LOGIN</h1>
+
+<p class="subtitle">
+Não possui login? <a href="/cadastro">Cadastrar-se</a>
+</p>
+
+<label>EMAIL</label>
+<input id="email" type="email" placeholder="usuario@gmail.com" required>
+
+<label>SENHA</label>
+<input id="senha" type="password" placeholder="••••••" required>
+
+<button type="submit">Login</button>
+
+</form>
+
+</main>
+
+<!-- NOTIFICAÇÃO -->
+<div id="toast" class="toast"></div>
+
+<script>
+
+function showToast(message){
+
+const toast=document.getElementById("toast");
+
+toast.textContent=message;
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+toast.classList.remove("show");
+},3000);
+
+}
+
+document.getElementById("formLogin").addEventListener("submit", async (e)=>{
+
+e.preventDefault();
+
+const email=document.getElementById("email").value.trim();
+const senha=document.getElementById("senha").value;
+
+try{
+
+const resp=await fetch("/api/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({email,senha})
+});
+
+const data=await resp.json();
+
+if(!resp.ok){
+showToast(data.message||"Erro ao fazer login.");
+return;
+}
+
+showToast(data.message||"Login realizado com sucesso!");
+
+setTimeout(()=>{
+window.location.href="/home";
+},2000);
+
+}catch(err){
+showToast("Não consegui conectar no servidor. Verifique se o app.py está rodando.");
+}
+
+});
+
+</script>
+
+</body>
+</html>

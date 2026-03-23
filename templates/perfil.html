@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GestarBem • Perfil</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#ffe9ef;
+      --primary-2:#ffd4e0;
+      --neutral:#faf7f3;
+      --white:#ffffff;
+      --text:#111111;
+      --muted:rgba(17,17,17,0.65);
+      --border:rgba(17,17,17,0.12);
+      --card:rgba(255,255,255,0.88);
+      --shadow:0 18px 60px rgba(0,0,0,0.10);
+      --radius:10px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html, body{
+      min-height:100%;
+    }
+
+    body{
+      font-family:"Barlow",sans-serif;
+      background:var(--neutral);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    button, input, textarea{
+      font:inherit;
+    }
+
+    .top-line{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:2px;
+      background:rgba(255,255,255,0.9);
+      z-index:9999;
+    }
+
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      z-index:9998;
+      padding:18px 40px;
+      background:transparent;
+    }
+
+    .header-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:12px 16px;
+      border-radius:var(--radius);
+      background:rgba(255,233,239,0.18);
+      border:1px solid rgba(255,255,255,0.55);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+    }
+
+    .brand-mini{
+      font-family:"Barlow Condensed",sans-serif;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      opacity:.9;
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .menu-btn,
+    .close-btn{
+      width:44px;
+      height:44px;
+      border-radius:2px;
+      background:rgba(255,233,239,0.85);
+      border:1px solid rgba(17,17,17,0.12);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:.2s ease;
+      user-select:none;
+      font-size:18px;
+      line-height:1;
+      flex-shrink:0;
+    }
+
+    .menu-btn:hover,
+    .close-btn:hover,
+    .btn-square:hover{
+      transform:translateY(-1px);
+      filter:brightness(.98);
+    }
+
+    .btn-square{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:12px 18px;
+      border-radius:2px;
+      background:var(--primary);
+      color:#000;
+      border:1px solid rgba(17,17,17,0.12);
+      font-weight:500;
+      min-width:110px;
+      transition:.2s ease;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    .btn-square.secondary{
+      background:rgba(255,255,255,0.92);
+    }
+
+    .sidebar-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.25);
+      opacity:0;
+      pointer-events:none;
+      transition:.2s ease;
+      z-index:10020;
+    }
+
+    .sidebar-overlay.open{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .sidebar{
+      position:fixed;
+      top:0;
+      left:0;
+      height:100%;
+      width:min(320px,86vw);
+      background:rgba(255,255,255,0.88);
+      border-right:1px solid rgba(17,17,17,0.10);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      transform:translateX(-105%);
+      transition:.25s ease;
+      z-index:10030;
+      padding:18px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .sidebar.open{
+      transform:translateX(0);
+    }
+
+    .sidebar-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px;
+      border-radius:var(--radius);
+      background:rgba(255,233,239,0.30);
+      border:1px solid rgba(255,255,255,0.6);
+    }
+
+    .sidebar-title{
+      font-family:"Barlow Condensed",sans-serif;
+      font-weight:700;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      font-size:18px;
+      opacity:.9;
+    }
+
+    .sidebar-nav{
+      display:grid;
+      gap:10px;
+      margin-top:6px;
+    }
+
+    .side-link{
+      padding:12px;
+      border-radius:10px;
+      background:rgba(255,255,255,0.70);
+      border:1px solid rgba(17,17,17,0.10);
+      transition:.2s ease;
+      font-weight:500;
+      color:rgba(17,17,17,0.80);
+    }
+
+    .side-link:hover{
+      transform:translateY(-1px);
+      background:rgba(255,233,239,0.35);
+    }
+
+    .side-link.active{
+      background:rgba(255,233,239,0.85);
+      border-color:rgba(17,17,17,0.10);
+    }
+
+    .sidebar-footer{
+      margin-top:auto;
+      font-size:12px;
+      color:rgba(17,17,17,0.60);
+      padding:10px 4px;
+      line-height:1.5;
+    }
+
+    .page{
+      min-height:100vh;
+      padding:120px 24px 36px;
+      background:
+        linear-gradient(rgba(250,247,243,0.84), rgba(250,247,243,0.84)),
+        url("../static/img/fotosapatos.png") center/cover no-repeat;
+    }
+
+    .page-inner{
+      max-width:980px;
+      margin:0 auto;
+    }
+
+    .hero-card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,0.75);
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      padding:24px;
+      margin-bottom:18px;
+    }
+
+    .hero-top{
+      display:flex;
+      align-items:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .avatar-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      min-width:140px;
+    }
+
+    .avatar{
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      overflow:hidden;
+      border:3px solid rgba(255,255,255,0.8);
+      box-shadow:0 10px 24px rgba(0,0,0,0.12);
+      background:rgba(255,255,255,0.92);
+      display:grid;
+      place-items:center;
+      flex-shrink:0;
+    }
+
+    .avatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .avatar-placeholder{
+      font-family:"Barlow Condensed",sans-serif;
+      font-size:18px;
+      letter-spacing:.5px;
+      opacity:.55;
+      text-transform:uppercase;
+      text-align:center;
+      padding:10px;
+      line-height:1.1;
+    }
+
+    .upload-label{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.92);
+      border:1px solid rgba(17,17,17,0.10);
+      cursor:pointer;
+      transition:.2s ease;
+      font-size:13px;
+      font-weight:500;
+      text-align:center;
+    }
+
+    .upload-label:hover{
+      transform:translateY(-1px);
+      background:rgba(255,233,239,0.38);
+    }
+
+    .upload-label input{
+      display:none;
+    }
+
+    .hero-info{
+      flex:1;
+      min-width:240px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,233,239,0.72);
+      border:1px solid rgba(17,17,17,0.08);
+      font-size:12px;
+      margin-bottom:12px;
+    }
+
+    .page-title{
+      font-family:"Barlow Condensed",sans-serif;
+      font-size:38px;
+      line-height:1;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      margin-bottom:10px;
+    }
+
+    .page-subtitle{
+      font-size:15px;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:620px;
+    }
+
+    .form-card{
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(17,17,17,0.10);
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 14px 45px rgba(0,0,0,0.05);
+    }
+
+    .section-title{
+      font-family:"Barlow Condensed",sans-serif;
+      font-size:24px;
+      text-transform:uppercase;
+      letter-spacing:.6px;
+      margin-bottom:14px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:14px;
+    }
+
+    .field{
+      display:grid;
+      gap:6px;
+    }
+
+    .field.full{
+      grid-column:1 / -1;
+    }
+
+    .field label{
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      opacity:.8;
+      font-weight:600;
+    }
+
+    .field input{
+      width:100%;
+      padding:12px 12px;
+      border:1px solid rgba(17,17,17,0.12);
+      border-radius:10px;
+      background:#fff;
+      font-family:"Barlow",sans-serif;
+      font-size:14px;
+      outline:none;
+      transition:border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .field input:focus{
+      border-color:rgba(255,212,224,0.95);
+      box-shadow:0 0 0 3px rgba(255,233,239,0.5);
+    }
+
+    .field input[readonly]{
+      background:rgba(245,245,245,0.9);
+      color:rgba(17,17,17,0.58);
+      cursor:not-allowed;
+    }
+
+    .field-help{
+      font-size:12px;
+      color:rgba(17,17,17,0.55);
+      line-height:1.4;
+    }
+
+    .form-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    .toast{
+      position:fixed;
+      top:20px;
+      left:50%;
+      transform:translateX(-50%) translateY(-20px);
+      width:calc(100% - 28px);
+      max-width:420px;
+      background:#fff;
+      color:#111;
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid #ffd4e0;
+      box-shadow:0 10px 25px rgba(0,0,0,0.08);
+      font-size:14px;
+      font-weight:500;
+      line-height:1.4;
+      text-align:center;
+      opacity:0;
+      pointer-events:none;
+      transition:all .35s ease;
+      z-index:99999;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media (max-width:920px){
+      header{
+        padding:18px 18px;
+      }
+
+      .page{
+        padding:110px 18px 28px;
+      }
+
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+
+      .page-title{
+        font-size:34px;
+      }
+    }
+
+    @media (max-width:640px){
+      .header-inner{
+        padding:10px 12px;
+      }
+
+      .header-actions{
+        width:100%;
+        justify-content:flex-start;
+      }
+
+      .menu-btn,
+      .close-btn{
+        width:40px;
+        height:40px;
+        font-size:16px;
+      }
+
+      .btn-square{
+        min-width:auto;
+        padding:10px 14px;
+        font-size:13px;
+      }
+
+      .page{
+        padding:102px 14px 24px;
+      }
+
+      .hero-card,
+      .form-card{
+        padding:16px;
+      }
+
+      .hero-top{
+        gap:14px;
+      }
+
+      .avatar{
+        width:96px;
+        height:96px;
+      }
+
+      .page-title{
+        font-size:28px;
+      }
+
+      .page-subtitle{
+        font-size:14px;
+      }
+
+      .section-title{
+        font-size:21px;
+      }
+
+      .form-actions{
+        justify-content:stretch;
+      }
+
+      .form-actions .btn-square{
+        width:100%;
+      }
+
+      .sidebar{
+        width:min(300px,88vw);
+        padding:16px 14px;
+      }
+
+      .side-link{
+        padding:11px 12px;
+        font-size:14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top-line"></div>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <aside class="sidebar" id="sidebar" aria-hidden="true">
+    <div class="sidebar-top">
+      <div class="sidebar-title">Menu</div>
+      <button class="close-btn" id="closeSidebar" type="button" aria-label="Fechar menu">✕</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="side-link" href="/home">Home</a>
+      <a class="side-link" href="/agenda">Agenda</a>
+      <a class="side-link" href="/listas">Listas</a>
+      <a class="side-link" href="/documentos">Documentos</a>
+      <a class="side-link active" href="/perfil">Perfil</a>
+      <a class="side-link" href="/emergencia">Emergência</a>
+      <a class="side-link" href="/">Sair</a>
+    </nav>
+
+    <div class="sidebar-footer">GestarBem • seu espaço de cuidado e organização</div>
+  </aside>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand-mini">GestarBem</div>
+
+      <div class="header-actions">
+        <button class="menu-btn" id="openSidebar" type="button" aria-label="Abrir menu">☰</button>
+        <a class="btn-square secondary" href="/home">Voltar</a>
+        <a class="btn-square" href="/">Sair</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-inner">
+
+      <section class="hero-card">
+        <div class="hero-top">
+          <div class="avatar-wrap">
+            <div class="avatar" id="avatarPreview">
+              {% if user.foto %}
+                <img src="{{ user.foto }}" alt="Foto de perfil">
+              {% else %}
+                <div class="avatar-placeholder">Sua foto</div>
+              {% endif %}
+            </div>
+
+            <label class="upload-label">
+              Selecionar nova foto
+              <input type="file" id="foto" accept="image/*">
+            </label>
+          </div>
+
+          <div class="hero-info">
+            <div class="eyebrow">Seus dados principais</div>
+            <h1 class="page-title">Perfil</h1>
+            <p class="page-subtitle">
+              Atualize suas informações para deixar o GestarBem mais completo, organizado e útil no seu dia a dia.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2 class="section-title">Informações pessoais</h2>
+
+        <form id="perfilForm">
+          <div class="form-grid">
+            <div class="field full">
+              <label for="nome">Nome</label>
+              <input id="nome" name="nome" type="text" value="{{ user.nome if user.nome else '' }}" placeholder="Seu nome completo" required>
+            </div>
+
+            <div class="field full">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" value="{{ user.email if user.email else '' }}" readonly>
+              <div class="field-help">O e-mail fica bloqueado para evitar mudanças acidentais.</div>
+            </div>
+
+            <div class="field">
+              <label for="telefone">Telefone</label>
+              <input id="telefone" name="telefone" type="tel" value="{{ user.telefone if user.telefone else '' }}" placeholder="(00) 00000-0000">
+            </div>
+
+            <div class="field">
+              <label for="semana_gestacional">Semana gestacional</label>
+              <input id="semana_gestacional" name="semana_gestacional" type="number" min="1" max="42" value="{{ user.semana_gestacional if user.semana_gestacional else '' }}" placeholder="Ex: 20">
+            </div>
+
+            <div class="field">
+              <label for="senha">Nova senha</label>
+              <input id="senha" name="senha" type="password" placeholder="••••••">
+            </div>
+
+            <div class="field">
+              <label for="confirmarSenha">Confirmar nova senha</label>
+              <input id="confirmarSenha" name="confirmarSenha" type="password" placeholder="••••••">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-square secondary" type="button" id="cancelarBtn">Cancelar alterações</button>
+            <button class="btn-square" type="submit">Salvar alterações</button>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const openSidebarBtn = document.getElementById("openSidebar");
+    const closeSidebarBtn = document.getElementById("closeSidebar");
+
+    function openSidebar(){
+      sidebar.classList.add("open");
+      sidebarOverlay.classList.add("open");
+      sidebar.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeSidebar(){
+      sidebar.classList.remove("open");
+      sidebarOverlay.classList.remove("open");
+      sidebar.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    openSidebarBtn.addEventListener("click", openSidebar);
+    closeSidebarBtn.addEventListener("click", closeSidebar);
+    sidebarOverlay.addEventListener("click", closeSidebar);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeSidebar();
+    });
+
+    function showToast(message){
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
+    const fotoInput = document.getElementById("foto");
+    const avatarPreview = document.getElementById("avatarPreview");
+
+    fotoInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      avatarPreview.innerHTML = `<img src="${url}" alt="Prévia da nova foto">`;
+    });
+
+    const perfilForm = document.getElementById("perfilForm");
+    const cancelarBtn = document.getElementById("cancelarBtn");
+
+    cancelarBtn.addEventListener("click", () => {
+      window.location.reload();
+    });
+
+    perfilForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const nome = document.getElementById("nome").value.trim();
+      const telefone = document.getElementById("telefone").value.trim();
+      const semana = document.getElementById("semana_gestacional").value.trim();
+      const senha = document.getElementById("senha").value;
+      const confirmar = document.getElementById("confirmarSenha").value;
+
+      if (senha && senha !== confirmar) {
+        showToast("As senhas não coincidem.");
+        return;
+      }
+
+      if (semana && (Number(semana) < 1 || Number(semana) > 42)) {
+        showToast("A semana gestacional deve estar entre 1 e 42.");
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append("nome", nome);
+        formData.append("telefone", telefone);
+        formData.append("semana_gestacional", semana);
+        formData.append("senha", senha);
+
+        if (fotoInput.files[0]) {
+          formData.append("foto", fotoInput.files[0]);
+        }
+
+        const resp = await fetch("/api/perfil", {
+          method: "PUT",
+          body: formData
+        });
+
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          showToast(data.message || "Não foi possível salvar as alterações.");
+          return;
+        }
+
+        showToast(data.message || "Perfil atualizado com sucesso!");
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+
+      } catch (error) {
+        showToast("Não consegui conectar no servidor.");
+      }
+    });
+  </script>
+</body>
+</html>

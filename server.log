@@ -1,0 +1,12 @@
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 114-157-231
+ * Detected change in 'c:\\Users\\manutencao\\Downloads\\GestarBem - 22-02\\Gestarbem (3) (1)\\Gestarbem (5)\\Gestarbem (3)\\Gestarbem\\app.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 114-157-231
